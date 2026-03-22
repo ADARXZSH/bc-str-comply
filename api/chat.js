@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -18,7 +18,7 @@ module.exports = async function handler(req, res) {
       };
     });
 
-    var body = {
+    const body = {
       contents: geminiMessages,
       generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
     };
@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
       body.system_instruction = { parts: [{ text: system }] };
     }
 
-    var response = await fetch(
+    const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
       {
         method: 'POST',
@@ -36,19 +36,13 @@ module.exports = async function handler(req, res) {
       }
     );
 
-    var data = await response.json();
+    const data = await response.json();
 
     if (data.error) {
       return res.status(500).json({ error: data.error.message });
     }
 
-    var text = data.candidates
-      && data.candidates[0]
-      && data.candidates[0].content
-      && data.candidates[0].content.parts
-      && data.candidates[0].content.parts[0]
-      && data.candidates[0].content.parts[0].text
-      || 'No response';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
 
     return res.status(200).json({
       content: [{ type: 'text', text: text }]
@@ -56,4 +50,6 @@ module.exports = async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-};
+}
+
+
