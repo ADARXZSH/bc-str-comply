@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 
+const SUPABASE_URL = "https://doanymzmmslwzaesesvz.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvYW55bXptbXNsd3phZXNlc3Z6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzAzMjcsImV4cCI6MjA4OTc0NjMyN30.n60icq-yNXrfxBK03UxNK1hUr8m4EP7GslYjUnR7v8I";
+
 const LANGS = {
   en: { label: "English", flag: "🇬🇧" },
   zh: { label: "中文", flag: "🇨🇳" },
@@ -215,7 +218,7 @@ export default function App(){
   const risk=gap===0?"ok":gap<=3?"warn":"bad";
   const grp={};d.checklist.forEach(i=>{if(!grp[i.category])grp[i.category]=[];grp[i.category].push(i);});
   const rc={ok:{l:T.compliant[lang],c:"#2D6A4F",bg:"rgba(45,106,79,.05)",bd:"rgba(45,106,79,.12)",t:T.riskOk[lang]},warn:{l:T.atRisk[lang],c:"#B68D40",bg:"rgba(182,141,64,.05)",bd:"rgba(182,141,64,.12)",t:`${gap} ${T.riskWarn[lang]}`},bad:{l:T.highRisk[lang],c:"#C1444E",bg:"rgba(193,68,78,.05)",bd:"rgba(193,68,78,.12)",t:`${gap} ${T.riskBad[lang]}`}}[risk];
-  const doSub=()=>{if(mail.includes("@")&&mail.includes("."))setSubbed(true)};
+  const doSub=async()=>{if(!mail.includes("@")||!mail.includes("."))return;try{const r=await fetch(SUPABASE_URL+"/rest/v1/subscribers",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Prefer":"return=minimal"},body:JSON.stringify({email:mail})});if(!r.ok){const e=await r.text();console.error(e);}setSubbed(true);}catch(e){console.error(e);setSubbed(true);}};
 
   const EmailBox=({label,btn})=>!subbed?(
     <div style={{background:"linear-gradient(135deg,rgba(45,106,79,.03),rgba(45,106,79,.07))",borderRadius:14,padding:"16px 18px",marginBottom:16,border:"1px solid rgba(45,106,79,.1)"}}>
