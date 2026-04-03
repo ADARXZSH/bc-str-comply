@@ -11,7 +11,10 @@ module.exports = async function handler(req, res) {
   try {
     const { messages, system } = req.body;
 
-    const geminiMessages = (messages || []).map(function(m) {
+    const allMessages = (messages || []);
+    const firstUserIdx = allMessages.findIndex(function(m) { return m.role === 'user'; });
+    const trimmed = firstUserIdx >= 0 ? allMessages.slice(firstUserIdx) : allMessages;
+    const geminiMessages = trimmed.map(function(m) {
       return {
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }]
