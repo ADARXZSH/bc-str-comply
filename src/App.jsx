@@ -260,7 +260,8 @@ export default function App(){
         <div style={{width:56,height:56,borderRadius:14,background:"linear-gradient(135deg,#2D6A4F,#40916C)",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:16}}><span style={{fontSize:28}}>{"\u{1F3E0}"}</span></div>
         <h2 style={{fontFamily:"'Space Grotesk'",fontSize:23,fontWeight:700,marginBottom:7}}>{T.welcomeTitle[lang]}</h2>
         <p style={{color:"#888",fontSize:14,lineHeight:1.7,marginBottom:5}}>{T.welcomeDesc[lang]}</p>
-        <p style={{color:"#bbb",fontSize:12.5,lineHeight:1.6,marginBottom:22}}>{T.welcomeSub[lang]}</p>
+        <p style={{color:"#bbb",fontSize:12.5,lineHeight:1.6,marginBottom:16}}>{T.welcomeSub[lang]}</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",marginBottom:20}}>{Object.entries(LANGS).map(([k,v])=><button key={k} onClick={()=>setLang(k)} style={{padding:"9px 18px",borderRadius:100,border:`2px solid ${lang===k?"#2D6A4F":"#E0DDD5"}`,background:lang===k?"#2D6A4F":"#fff",color:lang===k?"#fff":"#555",cursor:"pointer",fontSize:13.5,fontFamily:"'DM Sans'",fontWeight:500,display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}><span>{v.flag}</span>{v.label}</button>)}</div>
         <button onClick={()=>setWelcome(false)} style={{background:"#2D6A4F",color:"#fff",border:"none",borderRadius:100,padding:"12px 38px",fontSize:14.5,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans'",boxShadow:"0 4px 16px rgba(45,106,79,.3)"}}>{T.welcomeCta[lang]}</button>
         <p style={{marginTop:12,fontSize:11,color:"#ccc"}}>{T.welcomeFree[lang]}</p>
       </div></div>)}
