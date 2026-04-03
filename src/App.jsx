@@ -208,7 +208,7 @@ export default function App(){
   const [city,setCity]=useState("vancouver");
   const [ck,setCk]=useState({});const [exp,setExp]=useState(null);const [tab,setTab]=useState("checklist");
   const [mail,setMail]=useState("");const [subbed,setSubbed]=useState(false);const [aff,setAff]=useState(null);
-  const [welcome,setWelcome]=useState(true);const [chatOpen,setChatOpen]=useState(false);
+  const [welcome,setWelcome]=useState(true);const [chatOpen,setChatOpen]=useState(true);
   const [langOpen,setLangOpen]=useState(false);
 
   const t=(key)=>key[lang]||key.en||key;
