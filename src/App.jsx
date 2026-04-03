@@ -184,7 +184,7 @@ function Chat({onClose,lang}){
   const send=async()=>{if(!inp.trim()||ld)return;const u=inp.trim();setInp("");const nm=[...msgs,{role:"user",content:u}];setMsgs(nm);setLd(true);
     try{const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:SYS_PROMPT(lang),messages:nm.map(m=>({role:m.role,content:m.content}))})});const d=await r.json();const t=d.content?.map(b=>b.type==="text"?b.text:"").filter(Boolean).join("\n")||d.error||"Error. Try again.";setMsgs(p=>[...p,{role:"assistant",content:t}]);}catch(e){setMsgs(p=>[...p,{role:"assistant",content:"Connection error. Please try again."}]);}setLd(false);};
   return(
-    <div style={{position:"fixed",bottom:70,right:20,width:380,maxWidth:"calc(100vw - 40px)",height:500,maxHeight:"calc(100vh - 100px)",background:"#fff",borderRadius:20,boxShadow:"0 12px 48px rgba(0,0,0,.15),0 0 0 1px rgba(0,0,0,.05)",display:"flex",flexDirection:"column",zIndex:300,overflow:"hidden",animation:"fu .3s ease"}}>
+    <div className="chat-panel" style={{position:"fixed",bottom:70,right:20,width:380,maxWidth:"calc(100vw - 40px)",height:500,maxHeight:"calc(100vh - 100px)",background:"#fff",borderRadius:20,boxShadow:"0 12px 48px rgba(0,0,0,.15),0 0 0 1px rgba(0,0,0,.05)",display:"flex",flexDirection:"column",zIndex:300,overflow:"hidden",animation:"fu .3s ease"}}>
       <div style={{padding:"14px 18px",background:"linear-gradient(135deg,#2D6A4F,#40916C)",color:"#fff",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:30,height:30,borderRadius:9,background:"rgba(255,255,255,.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>{"\u{1F916}"}</div><div><div style={{fontWeight:600,fontSize:13.5}}>{T.chatTitle[lang]}</div><div style={{fontSize:10.5,opacity:.8}}>{T.chatSub[lang]}</div></div></div>
         <button onClick={onClose} style={{background:"rgba(255,255,255,.2)",border:"none",color:"#fff",width:26,height:26,borderRadius:7,cursor:"pointer",fontSize:15,display:"flex",alignItems:"center",justifyContent:"center"}}>&times;</button>
@@ -244,7 +244,16 @@ export default function App(){
         input:focus{outline:2px solid #2D6A4F;outline-offset:-1px}
         .chat-fab{position:fixed;bottom:65px;right:20px;width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#2D6A4F,#40916C);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 24px rgba(45,106,79,.35);z-index:299;transition:all .2s;animation:bounceIn .4s ease}.chat-fab:hover{transform:scale(1.05)}
         .lang-dd{position:absolute;top:100%;right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);border:1px solid #EDECE8;overflow:hidden;z-index:100;animation:fu .2s ease;min-width:140px}
-        @media(max-width:600px){.sr{flex-direction:column!important;text-align:center}.fg{grid-template-columns:1fr!important}}
+        @media(max-width:600px){
+          .sr{flex-direction:column!important;text-align:center}
+          .fg{grid-template-columns:1fr!important}
+          .chat-panel{left:0!important;right:0!important;bottom:0!important;width:100%!important;max-width:100%!important;border-radius:20px 20px 0 0!important;height:80vh!important;max-height:80vh!important}
+          .chat-panel input{font-size:16px!important}
+          .chat-fab{bottom:16px!important;right:16px!important}
+          .hdr-top{flex-wrap:wrap;gap:8px}
+          .tb{padding:10px 11px!important;font-size:12px!important}
+          .cp{padding:5px 11px!important;font-size:11.5px!important}
+        }
       `}</style>
 
       {welcome&&(<div className="ov" onClick={()=>setWelcome(false)}><div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:20,padding:"36px 30px",maxWidth:460,width:"92%",textAlign:"center"}}>
@@ -264,7 +273,7 @@ export default function App(){
 
       <header style={{background:"#fff",borderBottom:"1px solid #EDECE8"}}>
         <div style={{maxWidth:840,margin:"0 auto",padding:"14px 18px 0"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+          <div className="hdr-top" style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:32,height:32,borderRadius:9,background:"linear-gradient(135deg,#2D6A4F,#40916C)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>{"\u{1F3E0}"}</span></div>
               <div><h1 style={{fontFamily:"'Space Grotesk'",fontSize:17,fontWeight:700,letterSpacing:-.5}}>{T.brand[lang]}</h1><p style={{fontSize:10,color:"#bbb",fontFamily:"'DM Mono'"}}>{T.tagline[lang]}</p></div>
